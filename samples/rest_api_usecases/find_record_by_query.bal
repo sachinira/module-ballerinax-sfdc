@@ -44,8 +44,8 @@ public function main(){
             while (nextRecordsUrl is string && nextRecordsUrl.trim() != "") {
                 log:printInfo("Found new query result set! nextRecordsUrl:" + nextRecordsUrl);
                 sfdc:SoqlResult|sfdc:Error nextRes = baseClient->getNextQueryResult(<@untainted>nextRecordsUrl);
-                
                 if (nextRes is sfdc:SoqlResult) {
+                    nextRecordsUrl = nextRes["nextRecordsUrl"].toString();
                     totalRecords = totalRecords + nextRes.records.length();
                     res = nextRes;
                 } 
@@ -55,9 +55,7 @@ public function main(){
         else{
             log:printInfo("No Results Found");
         }
-        
     } else {
         log:printError(msg = res.message());
     }
-
 }
